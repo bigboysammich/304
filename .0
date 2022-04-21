@@ -1,0 +1,101 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+
+using namespace std;
+
+int factorial(int x) {
+if(x == 0 || x == 1)
+return 1;
+int fact = 1;
+for(int i=2; i<=x ;i++){
+fact *= i;
+}
+return fact;
+}
+
+double sine(double x) {
+double sineValue[6];  
+ sineValue[0] = 0.0; // hold the value of sin(x)
+int sign = 0;
+double temp;
+// For i = ....do the following steps
+for(int i=1; i<=10; i += 2) {
+// if sign is 0, add the term to sineValue
+if(sign == 0) {
+sineValue[i] += pow(x, i)/factorial(i);
+} else {
+// subtact the term from sineValue
+sineValue[i] -= pow(x, i)/factorial(i);
+}
+// update the sign value
+temp=sineValue[i];
+sign = !sign;
+}
+
+return temp;
+//return sineValue[];
+}
+
+
+// this function calculates the value of cos(x)
+double cosine(double x) {
+double cosineValue[6];
+cosineValue[0] = 0; // hold the value of cos(x)
+int sign = 0;
+double temp;
+
+for(int i=0; i<=6; i += 2) {
+// if sign is 0, add the term to cosineValue
+if(sign == 0) {
+cosineValue[i] += pow(x, i)/factorial(i);
+} else {
+
+cosineValue[i] -= pow(x, i)/factorial(i);
+}
+temp=cosineValue[i];
+sign = !sign;
+}
+
+return temp;
+}
+
+
+int main() {
+
+double x;
+cout << "\nEnter the value of x : ";
+cin >> x;
+
+// get the sin(x) and cosine(x) using the utility functions
+double     sineValue[6];
+sineValue[0] = sine(x);
+double  cosineValue[6];
+cosineValue[0] = cosine(x);
+double squareValue[6];
+double error[6];
+double errorPercentage[6];
+for(int i=0;i<=6;i++)
+{
+// calculate sin(x)^2 + cos(x)^2
+squareValue[i] = double(sineValue[i]*sineValue[i]) + double(cosineValue[i]*cosineValue[i]);
+
+// calculate the error percentage
+ error[i] = abs(1.00 - squareValue[i]);
+errorPercentage[i] = error[i] * 100.00;
+           }
+
+
+cout<<setprecision(8);
+cout << "Iteration  sin(x)         cos(x)       sin(x)^2 + cos^2(x)        Error %" << endl;
+cout << "======================================================================" << endl;
+for(i=0;i<=6;i++)
+{
+
+cout <<"\n"<<i+1<<"\t"<<setw(8)<<sineValue[i] << "\t\t" << setw(8)<<cosineValue[i] << "\t" <<setw(8)<< squareValue[i] << "\t" <<setw(8)<< errorPercentage[i];
+
+
+}
+return 0;
+}
